@@ -1,7 +1,10 @@
 streamlit
+google-generativeai
 groq
-duckduckgo-search
+pandas
+st-gsheets-connection
 gTTS
 PyPDF2
 streamlit-mic-recorder
 streamlit-pdf-viewer
+duckduckgo-search
