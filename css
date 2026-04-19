@@ -1,1 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap');
 
+/* Industrial High-Tech Background */
+.stApp {
+    background-color: #0f172a !important;
+    background-image: 
+        linear-gradient(rgba(251, 191, 36, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(251, 191, 36, 0.04) 1px, transparent 1px) !important;
+    background-size: 30px 30px !important;
+}
+
+/* AXON Amber Title */
+.axon-title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 85px !important;
+    background: linear-gradient(to bottom, #fbbf24 0%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.5));
+    letter-spacing: -3px;
+}
+
+.axon-sub {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 40px !important;
+    color: #e2e8f0 !important;
+    margin-top: -15px;
+}
+
+/* Axon Box Styling */
+.axon-box {
+    background: rgba(30, 41, 59, 0.8) !important;
+    border: 2px solid #fbbf24 !important;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 0 25px rgba(251, 191, 36, 0.1);
+}
+
+/* Safety Sweep Animation (Amber) */
+.stApp::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, transparent, #fbbf24, transparent);
+    opacity: 0.4;
+    z-index: 99;
+    animation: radar-sweep 5s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes radar-sweep {
+    0% { top: -5%; }
+    100% { top: 105%; }
+}
+
+/* Custom Header for Operator Info */
+.custom-header {
+    background: rgba(251, 191, 36, 0.1);
+    color: #fbbf24;
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+/* Deactivate Button (Red Alert) */
+div[data-testid="stButton"] > button[kind="secondary"] {
+    background-color: transparent !important;
+    border: 1px solid #ef4444 !important;
+    color: #ef4444 !important;
+    font-family: 'Orbitron', sans-serif !important;
+    font-size: 12px !important;
+}
+
+div[data-testid="stButton"] > button[kind="secondary"]:hover {
+    background-color: #ef4444 !important;
+    color: white !important;
+}
