@@ -30,35 +30,39 @@ def digest_site_specs():
     return ""
 
 @st.cache_data(ttl=3600)
+
+
+import openai # DeepSeek uses the OpenAI library
+
+@st.cache_data(ttl=3600)
 def axon_query(prompt: str, mode: str) -> str:
     site_context = digest_site_specs()
-    live_intel = ""
     
-    if mode == "Live Safety Feed":
-        try:
-            with DDGS() as ddgs:
-                results = [r['body'] for r in ddgs.text(f"Dubai Municipality site safety 2026 {prompt}", max_results=3)]
-                live_intel = "\n\n[LIVE DM COMPLIANCE DATA - APRIL 2026]:\n" + "\n".join(results)
-        except:
-            live_intel = "\n(Real-time safety link restricted. Using internal protocol.)"
-
-    # --- AXON LOGIC RULES ---
+    # Setup DeepSeek Client
+    client = openai.OpenAI(
+        api_key=st.secrets["DEEPSEEK_API_KEY"], 
+        base_url="https://api.deepseek.com"
+    )
+    
     if mode == "Engineering Specs":
-        sys_rules = f"You are AXON SITE Intelligence. Use these blueprints/specs: {site_context}. Professional, technical tone."
+        sys_rules = f"You are AXON SITE Intelligence. Use ONLY these specs: {site_context}."
     elif mode == "Site Radio":
-        sys_rules = "You are a Site Supervisor. Short, loud, clear safety commands for workers. Expert translator."
+        sys_rules = "You are a Site Supervisor. Expert in safety commands."
     else:
-        sys_rules = f"You are AXON SITE. Date: April 2026. Focus: Dubai Building Safety Law No. 3. {live_intel}"
+        sys_rules = "You are AXON SITE. Date: April 20, 2026. Focus: Dubai Safety Law No. 3."
 
     try:
-        client = Groq(api_key=st.secrets["GROQ_API_KEY"])
-        completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[{"role": "system", "content": sys_rules}, {"role": "user", "content": prompt}]
+        response = client.chat.completions.create(
+            model="deepseek-chat",
+            messages=[
+                {"role": "system", "content": sys_rules},
+                {"role": "user", "content": prompt}
+            ],
+            stream=False
         )
-        return completion.choices[0].message.content
+        return response.choices[0].message.content
     except Exception as e:
-        return f"AXON OVERLOAD: {str(e)}. Standby 30s."
+        return f"AXON ENGINE ERROR: {str(e)}"
 
 def save_site_log(report_text):
     with open("site_daily_reports.txt", "a", encoding="utf-8") as f:
