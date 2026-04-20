@@ -32,7 +32,7 @@ def digest_site_specs():
 @st.cache_data(ttl=3600)
 
 
-import openai # DeepSeek uses the OpenAI library
+import openai 
 
 @st.cache_data(ttl=3600)
 def axon_query(prompt: str, mode: str) -> str:
