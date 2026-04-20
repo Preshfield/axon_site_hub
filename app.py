@@ -29,9 +29,6 @@ def digest_site_specs():
         except: return ""
     return ""
 
-@st.cache_data(ttl=3600)
-
-
 import openai 
 
 @st.cache_data(ttl=3600)
