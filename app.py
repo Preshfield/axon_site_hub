@@ -7,6 +7,21 @@ from gtts import gTTS
 import PyPDF2
 from streamlit_mic_recorder import speech_to_text
 from streamlit_pdf_viewer import pdf_viewer
+import streamlit as st
+
+# Hide Streamlit default branding and UI elements
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    div[data-testid="stToolbar"] {visibility: hidden; height: 0%;}
+    div[data-testid="stDecoration"] {visibility: hidden; height: 0%;}
+    div[data-testid="stStatusWidget"] {visibility: hidden; height: 0%;}
+    </style>
+"""
+
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # 1. LOAD EXTERNAL CSS
 def local_css(file_name):
