@@ -32,34 +32,33 @@ def digest_site_specs():
 import openai 
 
 @st.cache_data(ttl=3600)
-def axon_query(prompt: str, mode: str) -> str:
+def axon_query(user_prompt: str, mode: str):
+    # 1. Setup Context (Same as before)
     site_context = digest_site_specs()
     
-    # Setup DeepSeek Client
-    client = openai.OpenAI(
-        api_key=st.secrets["DEEPSEEK_API_KEY"], 
-        base_url="https://api.deepseek.com"
-    )
+    # 2. Build the System Instruction
+    sys_rules = f"You are AXON SITE Intelligence. Use these specs: {site_context}. Be conversational but professional."
     
-    if mode == "Engineering Specs":
-        sys_rules = f"You are AXON SITE Intelligence. Use ONLY these specs: {site_context}."
-    elif mode == "Site Radio":
-        sys_rules = "You are a Site Supervisor. Expert in safety commands."
-    else:
-        sys_rules = "You are AXON SITE. Date: April 20, 2026. Focus: Dubai Safety Law No. 3."
+    # 3. Create the Conversation Packet (The Memory)
+    # We start with the system rules, then add all previous messages
+    conversation = [{"role": "system", "content": sys_rules}]
+    for msg in st.session_state.messages:
+        conversation.append({"role": msg["role"], "content": msg["content"]})
+    
+    # Add the current prompt
+    conversation.append({"role": "user", "content": user_prompt})
 
+    # 4. Call DeepSeek
+    client = openai.OpenAI(api_key=st.secrets["DEEPSEEK_API_KEY"], base_url="https://api.deepseek.com")
+    
     try:
         response = client.chat.completions.create(
             model="deepseek-chat",
-            messages=[
-                {"role": "system", "content": sys_rules},
-                {"role": "user", "content": prompt}
-            ],
-            stream=False
+            messages=conversation
         )
         return response.choices[0].message.content
     except Exception as e:
-        return f"AXON ENGINE ERROR: {str(e)}"
+        return f"MEMORY ERROR: {str(e)}"
 
 def save_site_log(report_text):
     with open("site_daily_reports.txt", "a", encoding="utf-8") as f:
