@@ -35,7 +35,11 @@ def falcon_query(user_prompt, mode):
     pass
 
 # --- STEP 3: THE UI / SIDEBAR ---
-st.title("🦅 FALCON EYE SECURITY")
+# --- STEP 3: THE UI / SIDEBAR ---
+st.set_page_config(page_title="AXON SITE | Command Hub", page_icon="🏗️")
+st.title("🏗️ AXON SITE INTELLIGENCE")
+# ... your sidebar and chat input code goes here ...
+
 # ... rest of your layout ...
 
 
