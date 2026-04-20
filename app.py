@@ -16,6 +16,28 @@ def local_css(file_name):
 
 st.set_page_config(page_title="AXON SITE | Command Hub", layout="wide", page_icon="🏗️")
 local_css("css/style.css")
+import streamlit as st
+import openai
+# ... your other imports ...
+
+# --- STEP 1: INITIALIZE MEMORY (PUT IT HERE) ---
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# --- STEP 2: YOUR FUNCTIONS ---
+def digest_manual():
+    # ... code for PDF processing ...
+    pass
+
+@st.cache_data(ttl=3600)
+def falcon_query(user_prompt, mode):
+    # ... the Mistral/DeepSeek logic ...
+    pass
+
+# --- STEP 3: THE UI / SIDEBAR ---
+st.title("🦅 FALCON EYE SECURITY")
+# ... rest of your layout ...
+
 
 # ====================== AXON INTELLIGENCE ENGINES ======================
 def digest_site_specs():
